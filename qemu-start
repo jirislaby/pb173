@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$#" = "0"  ]; then
+	echo Usage: $0 path-to-image
+	exit 1
+fi
+
+qemu-system-x86_64 -k en-us -smp 4 -m 1000 -hda $1 -usb -net user -net nic -serial pty
