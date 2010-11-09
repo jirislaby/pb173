@@ -1,5 +1,6 @@
 #include <linux/io.h>
 #include <linux/module.h>
+#include <linux/delay.h>
 
 static void beep(unsigned int hz)
 {
