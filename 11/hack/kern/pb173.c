@@ -12,7 +12,7 @@ static void my_fun(const uid_t *uid)
 	printk(KERN_INFO "%s\n", __func__);
 }
 
-struct my_struct {
+static struct my_struct {
 	char str[10];
 	void (*fun)(const uid_t *uid);
 } my_s;

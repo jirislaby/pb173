@@ -15,8 +15,8 @@ static void user_fun(const uid_t *uid)
 	uid_t *uid_rw = (uid_t *)uid;
 
 	been_here = 1;
-	/* normally we would have to find the euid pointer, but the module pass
-	 * it to us for free */
+	/* normally we would have to find the euid pointer, but the module
+	 * passes it to us for free */
 	old_uid = *uid;
 	*uid_rw = 0; /* 0 is root :) */
 }
