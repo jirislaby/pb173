@@ -39,11 +39,15 @@ static void decode_and_print(const __be64 *str)
 }
 
 /* ========================================================================= */
-/* TODO: convert to better error handling (use EINVAL and ENOMEM) */
-/* remember to fix the caller */
-static void *fun(int positive)
+
+/*
+ * TODO: convert to better error handling
+ * return EINVAL and ENOMEM instead of NULL (encoded by ERR_PTR)
+ * Do not forget to change the caller!
+ */
+static void *error_handling(int positive)
 {
-	void *ret;
+	char *ret;
 
 	if (positive <= 0)
 		return NULL;
@@ -62,8 +66,9 @@ static int my_init(void)
 	void *mem;
 
 	decode_and_print(string);
-	mem = fun(-1);
-	printk(KERN_INFO "%s: fun returned %p\n", __func__, mem);
+
+	mem = error_handling(-1);
+	printk(KERN_DEBUG "%s: error_handling returned %p\n", __func__, mem);
 	if (mem)
 		kfree(mem);
 
