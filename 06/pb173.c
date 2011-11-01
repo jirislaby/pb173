@@ -1,5 +1,6 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/slab.h>
 #include <linux/types.h>
 
 /* ========================================================================= */
@@ -38,10 +39,33 @@ static void decode_and_print(const __be64 *str)
 }
 
 /* ========================================================================= */
+/* TODO: convert to better error handling (use EINVAL and ENOMEM) */
+/* remember to fix the caller */
+static void *fun(int positive)
+{
+	void *ret;
+
+	if (positive <= 0)
+		return NULL;
+
+	ret = kmalloc(100, GFP_KERNEL);
+	if (!ret)
+		return NULL;
+
+	return ret;
+}
+
+/* ========================================================================= */
 
 static int my_init(void)
 {
+	void *mem;
+
 	decode_and_print(string);
+	mem = fun(-1);
+	printk(KERN_INFO "%s: fun returned %p\n", __func__, mem);
+	if (mem)
+		kfree(mem);
 
 	return -EIO;
 }
