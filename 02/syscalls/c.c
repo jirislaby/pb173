@@ -1,8 +1,9 @@
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/syscall.h>
 
 int main(void)
 {
-	syscall(__NR_mkdir, "test");
+	printf("syscall retval=%ld\n", syscall(__NR_fork));
 	return 0;
 }
