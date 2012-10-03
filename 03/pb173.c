@@ -3,10 +3,15 @@
 
 static int my_init(void)
 {
-	unsigned int a;
-
-	for (a = 0; a <= 7; a++)
-		printk("<%u>" "level %u\n", a, a);
+#define prn(x) printk(x "level " #x " %c\n", (x)[1]);
+	prn(KERN_EMERG);
+	prn(KERN_ALERT);
+	prn(KERN_CRIT);
+	prn(KERN_ERR);
+	prn(KERN_WARNING);
+	prn(KERN_NOTICE);
+	prn(KERN_INFO);
+	prn(KERN_DEBUG);
 
 	return -EIO;
 }
