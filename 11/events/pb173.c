@@ -24,13 +24,12 @@ static ssize_t my_read(struct file *filp, char __user *buf, size_t count,
 static ssize_t my_write(struct file *filp, const char __user *buf, size_t count,
 		loff_t *off)
 {
-	ssize_t ret = count;
+	ssize_t ret;
 
 	mutex_lock(&my_lock);
-	if (copy_from_user(str, buf, min_t(size_t, count, sizeof str - 1)))
-		ret = -EFAULT;
-
-	str[sizeof str - 1] = 0;
+	ret = simple_write_to_buffer(str, sizeof str - 1, off, buf, count);
+	if (!ret)
+		str[sizeof str - 1] = 0;
 	mutex_unlock(&my_lock);
 
 	return ret;
