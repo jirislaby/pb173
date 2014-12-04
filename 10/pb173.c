@@ -102,7 +102,7 @@ static const struct file_operations phantom_file_ops = {
 	.write = phantom_write,
 };
 
-static irqreturn_t phantom_isr(int irq, void *data, struct pt_regs *regs)
+static irqreturn_t phantom_isr(int irq, void *data)
 {
 	struct phantom_device *dev = data;
 	u32 ctl;
@@ -124,7 +124,7 @@ static irqreturn_t phantom_isr(int irq, void *data, struct pt_regs *regs)
  * Init and deinit driver
  */
 
-static unsigned int __devinit phantom_get_free(void)
+static unsigned int phantom_get_free(void)
 {
 	unsigned int i;
 
@@ -201,7 +201,7 @@ static int phantom_probe(struct pci_dev *pdev,
 	}
 
 	if (IS_ERR(device_create(phantom_class, &pdev->dev,
-				 MKDEV(phantom_major, minor),
+				 MKDEV(phantom_major, minor), NULL,
 				 "phantom%u", minor)))
 		dev_err(&pdev->dev, "can't create device\n");
 
@@ -226,7 +226,7 @@ err:
 	return retval;
 }
 
-static void __devexit phantom_remove(struct pci_dev *pdev)
+static void phantom_remove(struct pci_dev *pdev)
 {
 	struct phantom_device *pht = pci_get_drvdata(pdev);
 	unsigned int minor = MINOR(pht->cdev.dev);
@@ -251,7 +251,7 @@ static void __devexit phantom_remove(struct pci_dev *pdev)
 	pci_disable_device(pdev);
 }
 
-static struct pci_device_id phantom_pci_tbl[] __devinitdata = {
+static struct pci_device_id phantom_pci_tbl[] = {
 	{ .vendor = PCI_VENDOR_ID_PLX, .device = PCI_DEVICE_ID_PLX_9050,
 	  .subvendor = PCI_VENDOR_ID_PLX, .subdevice = PCI_DEVICE_ID_PLX_9050,
 	  .class = PCI_CLASS_BRIDGE_OTHER << 8, .class_mask = 0xffff00 },
@@ -263,7 +263,7 @@ static struct pci_driver phantom_pci_driver = {
 	.name = "phantom",
 	.id_table = phantom_pci_tbl,
 	.probe = phantom_probe,
-	.remove = __devexit_p(phantom_remove),
+	.remove = phantom_remove,
 };
 
 static int __init phantom_init(void)
