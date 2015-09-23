@@ -8,4 +8,4 @@ fi
 FILE=$1
 shift
 
-exec qemu-system-x86_64 -machine accel=kvm -device edu -k en-us -smp 2 -m 1000 -hda $FILE -usb -net user -net nic -redir tcp:2222::22 -serial pty "$@"
+exec qemu-system-x86_64 -machine accel=kvm -device edu -k en-us -smp 2 -m 1000 -hda $FILE -usb -net user -net nic,model=e1000 -redir tcp:2222::22 -serial pty "$@"
