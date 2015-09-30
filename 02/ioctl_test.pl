@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-if ($#ARGV + 1 < 4) {
+if (scalar @ARGV < 4) {
 	print "Usage: $0 /dev/something cmd arg arg_as_pointer\n\n";
 	print "  arg_as_pointer ... 0 to pass arg to ioctl (set value)\n";
 	print "                     1 to pass &arg to ioctl (get value)\n";
