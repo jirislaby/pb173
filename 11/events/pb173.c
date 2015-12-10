@@ -28,7 +28,7 @@ static ssize_t my_write(struct file *filp, const char __user *buf, size_t count,
 
 	mutex_lock(&my_lock);
 	ret = simple_write_to_buffer(str, sizeof str - 1, off, buf, count);
-	if (!ret)
+	if (ret >= 0)
 		str[sizeof str - 1] = 0;
 	mutex_unlock(&my_lock);
 
