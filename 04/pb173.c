@@ -10,16 +10,7 @@ static ssize_t my_read(struct file *filp, char __user *buf, size_t count,
 {
 	static const char string[] = "to return\n";
 
-	if (*off >= strlen(string) || !count)
-		return 0;
-
-	count = 1;
-
-	if (put_user(string[*off], buf))
-		return -EFAULT;
-
-	*off += count;
-	return count;
+	return simple_read_from_buffer(buf, count, off, string, strlen(string));
 }
 
 static struct file_operations my_fops = {
