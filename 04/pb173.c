@@ -5,12 +5,12 @@
 #include <linux/string.h>
 #include <linux/uaccess.h>
 
+static char buffer[128] = "to return\n";
+
 static ssize_t my_read(struct file *filp, char __user *buf, size_t count,
 		loff_t *off)
 {
-	static const char string[] = "to return\n";
-
-	return simple_read_from_buffer(buf, count, off, string, strlen(string));
+	return simple_read_from_buffer(buf, count, off, buffer, strlen(buffer));
 }
 
 static struct file_operations my_rfops = {
